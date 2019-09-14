@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth firebaseAuth;
     private DatabaseReference userReference;
     private TextView displayNameInDrawer;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+
+    {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +54,9 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
 
@@ -120,21 +127,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_map) {
 
-        } else if (id == R.id.nav_slideshow) {
+            Intent mapIntent = new Intent(MainActivity.this, MapsActivity.class);
+            startActivity(mapIntent);
+            drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_tools) {
+        } else if (id == R.id.nav_shop) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_about) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_about) {
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
