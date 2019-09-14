@@ -1,5 +1,6 @@
 package com.antailbaxt3r.kachranikaal;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -18,6 +19,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -29,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static int REQUEST_LOCATION_PERMISSION = 1;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private DatabaseReference binReference;
 
 
     @Override
@@ -39,6 +46,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        binReference = FirebaseDatabase.getInstance().getReference().child("bins");
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -64,12 +73,75 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap = googleMap;
 
+        binReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot shot : dataSnapshot.getChildren()){
+                    Bin dustbin = shot.getValue(Bin.class);
+                    LatLng latLng = new LatLng(dustbin.getLatitude(), dustbin.getLongitude());
+                    switch(dustbin.getType()){
+
+                        case "R":
+                            if (dustbin.isFull()){
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .title("Recyclable Waste Bin")
+                                    .snippet("Full")
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_recyclable)));
+                            }else{
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title("Recyclable Waste Bin")
+                                        .snippet("Not Full")
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_recyclable)));
+                            }
+                            break;
+                        case "NR":
+                            if (dustbin.isFull()){
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title("Non-Recyclable Waste Bin")
+                                        .snippet("Full")
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_blue)));
+                            }else{
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title("Non-Recyclable Waste Bin")
+                                        .snippet("Not Full")
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_blue)));
+                            }
+                            break;
+                        case "G":
+                            if (dustbin.isFull()){
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title("General Bin")
+                                        .snippet("Full")
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon)));
+                            }else{
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title("General Bin")
+                                        .snippet("Not Full")
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon)));
+                            }
+                            break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         LatLng bin1 = new LatLng(15.391281, 73.877584);
-        LatLng bin2 = new LatLng (15.390647, 73.87683);
-        LatLng bin3 = new LatLng(15.390556, 73.878625);
-        mMap.addMarker(new MarkerOptions().position(bin1).title("Recycleable Waste Bin")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_recyclable));
-        mMap.addMarker(new MarkerOptions().position(bin2).title("Non-Recycleable Waste Bin")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_blue));
-        mMap.addMarker(new MarkerOptions().position(bin3).title("General Bin")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon));
+//        LatLng bin2 = new LatLng (15.390647, 73.87683);
+//        LatLng bin3 = new LatLng(15.390556, 73.878625);
+//        mMap.addMarker(new MarkerOptions().position(bin2).title("Non-Recycleable Waste Bin")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_blue));
+//        mMap.addMarker(new MarkerOptions().position(bin3).title("General Bin")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bin1, 16f));
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
