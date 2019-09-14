@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "23663974493",
+    "firebase_url": "https://kachranikaal.firebaseio.com",
+    "project_id": "kachranikaal",
+    "storage_bucket": "kachranikaal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23663974493:android:a808fe45fe5af4747d15b4",
+        "android_client_info": {
+          "package_name": "com.antailbaxt3r.kachranikaal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23663974493-tvlikgom0qtpker7rhcas5k9hg6jq5dm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.antailbaxt3r.kachranikaal",
+            "certificate_hash": "9bad31d007c57a55358e03b2d378ec246c7eeec3"
+          }
+        },
+        {
+          "client_id": "23663974493-gcif2t3e9v895spgasnc5012ri7r1ive.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCx-liJdvNkcBHxAiC95ws8Kk0y03ykjPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23663974493-gcif2t3e9v895spgasnc5012ri7r1ive.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
