@@ -205,7 +205,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onLocationChanged(Location location) {
         LatLng here = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(here).title("Current Location"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(here));
     }
 

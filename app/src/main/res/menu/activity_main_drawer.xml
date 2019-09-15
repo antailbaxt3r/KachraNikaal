@@ -24,11 +24,8 @@
             <item
                 android:id="@+id/nav_contact"
                 android:icon="@drawable/ic_local_phone_black_24dp"
-                android:title="Contact Collectors" />
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/ic_info_outline_black_24dp"
-                android:title="About Us" />
+                android:title="Contact Cleaners" />
+            
         </menu>
     </item>
 

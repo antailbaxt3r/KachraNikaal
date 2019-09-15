@@ -1,5 +1,6 @@
 package com.antailbaxt3r.kachranikaal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -27,10 +28,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
@@ -42,9 +47,9 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
-    {
-
-    }
+    private RecyclerView recyclerView;
+    private EventsRVAdapter adapter;
+    private List<Event> eventList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,10 @@ public class MainActivity extends AppCompatActivity
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        recyclerView = findViewById(R.id.events_rv);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
@@ -87,6 +96,27 @@ public class MainActivity extends AppCompatActivity
 
         firebaseAuth = FirebaseAuth.getInstance();
         userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseAuth.getCurrentUser().getUid());
+
+        eventList.clear();
+        FirebaseDatabase.getInstance().getReference().child("events").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot shot : dataSnapshot.getChildren()){
+                    Event event = shot.getValue(Event.class);
+                    eventList.add(event);
+
+                }
+
+                adapter = new EventsRVAdapter(getApplicationContext(), eventList);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -115,6 +145,9 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Intent aboutUs = new Intent(MainActivity.this, AboutUs.class);
+            startActivity(aboutUs);
             return true;
         }
 
@@ -145,9 +178,10 @@ public class MainActivity extends AppCompatActivity
             startActivity(orderIntent);
             drawer.closeDrawer(GravityCompat.START);
 
-        } else if (id == R.id.nav_about) {
+        } else if (id == R.id.nav_contact) {
 
-        } else if (id == R.id.nav_about) {
+            Intent contactIntent = new Intent(MainActivity.this, ContactCleaners.class);
+            startActivity(contactIntent);
 
         }
 

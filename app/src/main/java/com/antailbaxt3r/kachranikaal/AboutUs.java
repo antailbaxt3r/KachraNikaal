@@ -6,16 +6,18 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.view.View;
 
-public class CheckOutActivity extends AppCompatActivity {
+public class AboutUs extends AppCompatActivity {
 
-    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_out);
+        setContentView(R.layout.activity_about_us);
 
-        attachID();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
 
         if (toolbar != null) {
 
@@ -29,11 +31,5 @@ public class CheckOutActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    private void attachID() {
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
     }
 }
