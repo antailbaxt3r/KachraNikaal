@@ -6,7 +6,7 @@ We plan to build an Android Application which will assist people in waste manage
 The app also provides for an online Sanitation store which displays a catalogue of cleaning items like brooms, disinfectants and other cleaning accessories like gloves and masks. These would be home-delivered to the customers upon placing the order. We have also provided for an online payment option through GooglePay for payment while ordering. The payment facilities can also be used while eliciting other services provided by the app.
 
 ## Additional Ideas
-We could attach a sensor in the dustbins at a level where it can hold garbage and integrate it with the app that displays a notification when the dustbin needs to be emptied. We could also set up a provision which automatically sends a request to the waste-collectors to empty the bin.
+We are planning to attach sensors in the dustbins at a level upto which it can hold garbage and integrate it with the app that displays a notification when the dustbin needs to be emptied. We could also set up a provision which automatically sends a request to the waste-collectors to empty the bin.
 
 ## Conclusion
 Through this app, we aim to make the collection and disposal of waste as convenient and efficient as possible. 
