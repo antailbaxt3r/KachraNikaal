@@ -13,6 +13,10 @@
             android:id="@+id/nav_shop"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:title="Shop" />
+        <item
+            android:id="@+id/nav_order"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="My Order" />
     </group>
 
     <item android:title="Communicate">

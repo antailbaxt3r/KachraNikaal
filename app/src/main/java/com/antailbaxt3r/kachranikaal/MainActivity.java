@@ -135,6 +135,16 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_shop) {
 
+            Intent shopIntent = new Intent(MainActivity.this, ShopActivity.class);
+            startActivity(shopIntent);
+            drawer.closeDrawer(GravityCompat.START);
+
+        }else if (id == R.id.nav_order){
+
+            Intent orderIntent = new Intent(MainActivity.this, MyOrder.class);
+            startActivity(orderIntent);
+            drawer.closeDrawer(GravityCompat.START);
+
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_about) {

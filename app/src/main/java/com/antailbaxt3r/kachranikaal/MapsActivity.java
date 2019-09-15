@@ -1,6 +1,8 @@
 package com.antailbaxt3r.kachranikaal;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -10,6 +12,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
     private static int MY_REQUEST_INT = 177;
@@ -36,12 +39,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private LocationListener locationListener;
     private DatabaseReference binReference;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        attachID();
+        setSupportActionBar(toolbar);
+        if (toolbar != null) {
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -56,6 +76,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
+    }
+
+    private void attachID() {
+        toolbar = findViewById(R.id.toolbar);
+
     }
 
 
@@ -83,11 +108,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         case "R":
                             if (dustbin.isFull()){
-                            mMap.addMarker(new MarkerOptions()
-                                    .position(latLng)
-                                    .title("Recyclable Waste Bin")
-                                    .snippet("Full")
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_recyclable)));
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(latLng)
+                                        .title("Recyclable Waste Bin")
+                                        .snippet("Full")
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon_recyclable)));
                             }else{
                                 mMap.addMarker(new MarkerOptions()
                                         .position(latLng)
@@ -181,7 +206,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onLocationChanged(Location location) {
         LatLng here = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.addMarker(new MarkerOptions().position(here).title("Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(here));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(here));
     }
 
     @Override
